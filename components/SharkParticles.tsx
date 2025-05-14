@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
-import { motion } from 'framer-motion-3d'
+import { motion } from 'framer-motion'
 import { useMotionValue } from 'framer-motion'
 
 // Generate random points in a sphere
@@ -103,7 +103,28 @@ const ParticleSystem = () => {
   useEffect(() => {
     const timer1 = setTimeout(() => {
       // Animate to shark shape
-      progress.set(1, { duration: 2.5, ease: [0.34, 1.56, 0.64, 1] })
+      const duration = 2.5
+      const ease = [0.34, 1.56, 0.64, 1] // Custom ease
+      
+      const startTime = Date.now()
+      const animate = () => {
+        const elapsed = Date.now() - startTime
+        const t = Math.min(elapsed / (duration * 1000), 1)
+        
+        // Custom easing function
+        const easedT = t === 1 ? 1 : 
+          t < 0.5 ? 
+          4 * t * t * t : 
+          1 - Math.pow(-2 * t + 2, 3) / 2
+        
+        progress.set(easedT)
+        
+        if (t < 1) {
+          requestAnimationFrame(animate)
+        }
+      }
+      
+      animate()
     }, 1000)
     
     return () => {
