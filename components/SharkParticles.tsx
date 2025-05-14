@@ -104,14 +104,12 @@ const ParticleSystem = () => {
     const timer1 = setTimeout(() => {
       // Animate to shark shape
       const duration = 2.5
-      const ease = [0.34, 1.56, 0.64, 1] // Custom ease
-      
       const startTime = Date.now()
       const animate = () => {
-        const elapsed = Date.now() - startTime
-        const t = Math.min(elapsed / (duration * 1000), 1)
+        const elapsed = (Date.now() - startTime) / 1000
+        const t = Math.min(elapsed / duration, 1)
         
-        // Custom easing function
+        // Custom easing function (approximating [0.34, 1.56, 0.64, 1])
         const easedT = t === 1 ? 1 : 
           t < 0.5 ? 
           4 * t * t * t : 
@@ -158,7 +156,7 @@ const ParticleSystem = () => {
   })
   
   return (
-    <motion.group
+    <group
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ 
         scale: 1, 
@@ -183,7 +181,7 @@ const ParticleSystem = () => {
           color="#00FFFF"
         />
       </Points>
-    </motion.group>
+    </group>
   )
 }
 
